@@ -9,12 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.texteditor.character.CharacterProperty;
 import org.texteditor.document.Document;
 import org.texteditor.character.Character;
-import org.texteditor.flyweight.CharacterPropertyFlyweight;
-
-import javax.print.Doc;
+import org.texteditor.flyweight.Flyweight;
 
 public class FileManager {
 
@@ -35,7 +32,6 @@ public class FileManager {
         ObjectMapper mapper = new ObjectMapper();
         List<Character> characters = mapper.readValue(new File(filename),
                 mapper.getTypeFactory().constructCollectionType(List.class, Character.class));
-//        System.out.println("Document loaded from JSON file " + filename);
         return characters;
     }
 
@@ -51,10 +47,7 @@ public class FileManager {
             String font = propertiesNode.get("font").asText();
             String color = propertiesNode.get("color").asText();
             int size = propertiesNode.get("size").asInt();
-//            CharacterProperty properties = new CharacterProperty(font, color, size);
-            CharacterProperty properties = CharacterPropertyFlyweight.getProperty(font, color, size);
-//            CharacterPropertyFlyweight.CharProperty properties = CharacterPropertyFlyweight.getProperty(font, color, size);
-//            Character character = new Character(value, properties);
+            Flyweight.CharProps properties = Flyweight.getProperty(font, color, size);
             Character character = new Character(value, properties);
             styledCharacters.add(character);
         }

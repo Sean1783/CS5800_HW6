@@ -64,23 +64,23 @@
 }, {
   "value" : "d",
   "properties" : {
-    "font" : "Arial",
-    "color" : "Red",
-    "size" : 12
+    "font" : "Veranda",
+    "color" : "Blue",
+    "size" : 14
   }
 }, {
   "value" : "C",
   "properties" : {
-    "font" : "Arial",
-    "color" : "Red",
-    "size" : 12
+    "font" : "Veranda",
+    "color" : "Blue",
+    "size" : 14
   }
 }, {
   "value" : "S",
   "properties" : {
-    "font" : "Arial",
-    "color" : "Red",
-    "size" : 12
+    "font" : "Veranda",
+    "color" : "Blue",
+    "size" : 14
   }
 }, {
   "value" : "5",

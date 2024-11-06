@@ -1,8 +1,7 @@
 package org.texteditor.document;
 
-import org.texteditor.character.CharacterProperty;
 import org.texteditor.character.Character;
-import org.texteditor.flyweight.CharacterPropertyFlyweight;
+import org.texteditor.flyweight.Flyweight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +11,21 @@ public class Document {
     private final String docName;
     private String rawText;
     private final List<Character> styledCharacters;
+
+    public static class Range {
+        private final int start;
+        private final int end;
+        public Range(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+        public int getStart() {
+            return start;
+        }
+        public int getEnd() {
+            return end;
+        }
+    }
 
     public Document(String docName) {
         this.docName = docName;
@@ -23,69 +37,47 @@ public class Document {
     }
 
     public List<Character> getStyledCharacters() {
-//        return new ArrayList<>(styledCharacters);
         return styledCharacters;
     }
 
     public void setStyledCharacters(List<Character> styledCharacters) {
        this.styledCharacters.clear();
        this.styledCharacters.addAll(styledCharacters);
-    //       for (Character character : styledCharacters) {
-    //           String font = character.getProperties().getFont();
-    //           String color = character.getProperties().getColor();
-    //           int size = character.getProperties().getSize();
-    //           CharacterProperty property = CharacterPropertyFlyweight.getProperty(font, color, size);
-    //           Character ch = new Character(character.getValue(), property);
-    //           this.styledCharacters.add(ch);
-    //       }
     }
 
     public void setRawText(String rawText) {
         this.rawText = rawText;
     }
 
-        public void setStyling (CharacterProperty characterProperty) {
-            styledCharacters.clear();
-            for (int i = 0; i < rawText.length(); i++) {
-                Character styledCharacter = new Character(rawText.charAt(i), characterProperty);
-                this.styledCharacters.add(styledCharacter);
-            }
+    public void setStyling (Flyweight.CharProps characterProperty) {
+        styledCharacters.clear();
+        for (int i = 0; i < rawText.length(); i++) {
+            Character styledCharacter = new Character(rawText.charAt(i), characterProperty);
+            this.styledCharacters.add(styledCharacter);
         }
+    }
 
-
-//    public void setStyling (CharacterPropertyFlyweight.CharProperty characterProperty) {
-//        styledCharacters.clear();
-//        for (int i = 0; i < rawText.length(); i++) {
-//            Character styledCharacter = new Character(rawText.charAt(i), characterProperty);
-//            System.out.println(styledCharacter.toString());
-//            this.styledCharacters.add(styledCharacter);
-//
-//        }
-//    }
-
-        public void setStyling (CharacterProperty characterProperty, int start, int end) {
-            if (start < 0 || end > rawText.length() || start > end) {
-                throw new IllegalArgumentException("Invalid start or end indices.");
-            }
-            for (int i = start; i < end; i++) {
-                Character styledCharacter = new Character(rawText.charAt(i), characterProperty);
-                styledCharacters.set(i, styledCharacter);
-            }
+    public void setStyling (Flyweight.CharProps characterProperty, int start, int end) {
+        if (start < 0 || end > rawText.length() || start > end) {
+            throw new IllegalArgumentException("Invalid start or end indices.");
         }
+        for (int i = start; i < end; i++) {
+            Character styledCharacter = new Character(rawText.charAt(i), characterProperty);
+            styledCharacters.set(i, styledCharacter);
+        }
+    }
 
-
-//    public void setStyling (CharacterPropertyFlyweight.CharProperty characterProperty, int start, int end) {
-//        if (start < 0 || end > rawText.length() || start > end) {
-//            throw new IllegalArgumentException("Invalid start or end indices.");
-//        }
-//        for (int i = start; i < end; i++) {
-//            Character styledCharacter = new Character(rawText.charAt(i), characterProperty);
-//            styledCharacters.set(i, styledCharacter);
-//        }
-//    }
-
-
-
+    public void setStyling (Flyweight.CharProps characterProperty, Document.Range range) {
+        int start = range.getStart();
+        int end = range.getEnd();
+        if (start < 0 || end > rawText.length() || start > end) {
+            throw new IllegalArgumentException("Invalid start or end indices.");
+        }
+        for (int i = start; i < end; i++) {
+            Character styledCharacter = new Character(rawText.charAt(i), characterProperty);
+            styledCharacters.set(i, styledCharacter);
+        }
+    }
 
     public void outputCharacterDetails() {
         for (Character ch : styledCharacters) {
